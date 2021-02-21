@@ -5,7 +5,7 @@ module.exports = {
         host: procces.env.DB_host || 'localhost',
         user: process.env.DB_USER || 'root',
         password: process.env.DB_PASSWORD || '',
-        database: process.env.DATABASE || 'db_registro'
+        database: process.env.DB_DATABASE || 'db_registro'
     }
 
 };
