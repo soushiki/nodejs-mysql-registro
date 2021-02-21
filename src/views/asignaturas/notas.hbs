@@ -1,0 +1,83 @@
+
+<div class="container">
+    <div class="row mt-5">
+       <div class="col-md-7">
+           <table class="table table-bordered table-hover">
+              <thead>
+                  <tr>
+                      <th >Nota</th>
+                      <th >Porcentaje</th>
+                      <th >Descripción</th>
+                      <th ></th>
+                  
+               </thead>
+               <tbody>
+              {{#each notas}}
+                  <tr>
+                 {{#compare grade ">=" 3 }}
+                  <td style="background-color: white; color:forestgreen; width:20%; ">{{grade}}</td>
+                 {{/compare}}
+                 {{#compare grade "<" 3 }}
+                  <td style="background-color: white; color:red; width:20%;">{{grade}}</td>
+                 {{/compare}}
+                  <td style="background-color: white; width:20%;">{{percentage}}%</td>
+                  <td style="background-color: white;">{{description}}</td>
+                  <td style="text-align:center;">
+                      <a href="/asignaturas/notas/nota_edit/{{subject_id}}/{{id}}" class="btn btn-info" >Editar</a>
+                      <a href="/asignaturas/notas/delete/{{subject_id}}/{{id}}" class="btn btn-danger" >Borrar</a>
+                     
+                  </td>
+                           
+                </tr>
+                 
+                {{/each}}
+                
+               </tbody>
+            </table>
+        </div>
+        <div class="col-md-5">
+            <div class="card">
+                <div class="card-body">
+                    <form action="/asignaturas/notas/add" method="POST" >
+                      <div class="form-group">
+                          <input type="double" name="grade" placeholder = "Nota" class="form-control">
+                      </div>
+                      <div class="form-group">
+                          <input type="integer" name="percentage"   placeholder = "Porcentaje" class = "form-control">
+                      </div>
+                      <div class="form-group">
+                            <textarea name="description" rows="2" class="form-control" placeholder="Descripción"></textarea>
+                      </div>
+                      <div class="form-group">
+                            <input type="hidden" name = "subject_id" class="form-control"  value="{{id}}"  >
+                      </div>
+                     <button type="submit" class="btn btn-primary">
+                         Guardar Nota
+                     </button>
+                    </form>
+               </div>
+            </div>
+              <div class="container p-7">
+                <div class="col-md-5">
+                    <div class="row mt-5">
+                        <div class="card">
+                             {{#if notas}}
+                                  {{#PromedioGanado notas }}
+                                  <div class="card-body"  style=" background:greenyellow ">
+                                     Promedio: {{#Promedio notas}}{{/Promedio}}
+                                  </div>
+                                  {{/PromedioGanado}}
+                                  {{#PromedioPerdido notas}}
+                                    <div class="card-body"  style="color:white; background:red ">
+                                     Promedio: {{#Promedio notas}}{{/Promedio}}
+                                    </div>
+                                  {{/PromedioPerdido}}
+                             {{/if}}
+                         </div>
+                     </div>
+                </div>  
+             </div>
+        </div>
+    </div>    
+</div>    
+      
