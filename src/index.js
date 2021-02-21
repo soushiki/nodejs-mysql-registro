@@ -113,7 +113,7 @@ hbs.handlebars.registerHelper('Promedio', function(arr){
 
    for(  i = 1; i < arr.length; i++ )
    {
-      average += arr[i].gradea*(arr[i].percentage/100);
+      average += arr[i].grade*(arr[i].percentage/100);
    }
 
   
