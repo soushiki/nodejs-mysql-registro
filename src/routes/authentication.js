@@ -5,7 +5,7 @@ const passport = require('passport');
 const { isLoggedIn } = require('../lib/auth');
 
 // SIGNUP
-router.get('/signup', async (req, res) => {
+router.get('/signup',  (req, res) => {
   res.render('auth/signup');
 });
 
@@ -16,7 +16,7 @@ router.post('/signup', passport.authenticate('local.signup', {
 }));
 
 // SINGIN
-router.get('/signin', async (req, res) => {
+router.get('/signin',  (req, res) => {
   res.render('auth/signin');
 });
 
