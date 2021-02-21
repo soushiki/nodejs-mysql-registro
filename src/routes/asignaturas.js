@@ -4,7 +4,7 @@ const router = express.Router();
 const pool = require('../database');
 const { isLoggedIn } = require('../lib/auth');
 
-router.get('/add', (req, res) => {
+router.get('/add', async (req, res) => {
     res.render('asignaturas/add');
 });
 
