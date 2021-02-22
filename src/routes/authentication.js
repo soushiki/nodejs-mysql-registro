@@ -20,10 +20,10 @@ router.get('/signin',  (req, res) => {
   res.render('auth/signin');
 });
 
-router.post('/signin', (req, res, next) => {
+router.post('/signin', async (req, res, next) => {
   req.check('username', 'Username is Required').notEmpty();
   req.check('password', 'Password is Required').notEmpty();
-  const errors = req.validationErrors();
+  const errors = await req.validationErrors();
   if (errors.length > 0) {
     req.flash('message', errors[0].msg);
     res.redirect('/signin');
