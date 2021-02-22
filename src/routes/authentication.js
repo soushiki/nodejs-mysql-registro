@@ -23,7 +23,7 @@ router.get('/signin',  (req, res) => {
 router.post('/signin', (req, res, next) => {
   req.check('username', 'Username is Required').notEmpty();
   req.check('password', 'Password is Required').notEmpty();
-  const errors = await req.validationErrors();
+  const errors = req.validationErrors();
   if (errors.length > 0) {
     req.flash('message', errors[0].msg);
     res.redirect('/signin');
