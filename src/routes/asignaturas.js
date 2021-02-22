@@ -1,10 +1,10 @@
 const express = require('express');
-const { validationResult } = require('express-validator/check');
 const router = express.Router();
 const pool = require('../database');
 const { isLoggedIn } = require('../lib/auth');
 
-router.get('/add', async (req, res) => {
+
+router.get('/add', (req, res) => {
     res.render('asignaturas/add');
 });
 
@@ -16,9 +16,17 @@ router.post('/add', async (req, res) => {
         description,
         user_id: req.user.id
     };
+    req.check('title', 'El nombre de la materia no puede estar vacío').notEmpty();
+    const errors = req.validationErrors();
+    if (errors.length > 0) {
+        req.flash('message', errors[0].msg);
+        res.redirect('/asignaturas/add');
+        }
+        else{
     await pool.query('INSERT INTO subjects set ?', [newSubject]);
     req.flash('success', 'Subject Saved Successfully');
     res.redirect('/asignaturas');
+        }
 });
 
 router.get('/', isLoggedIn, async (req, res) => {
@@ -49,9 +57,17 @@ router.post('/edit/:id', async (req, res) => {
         description,
         profesor
     };
+    req.check('title', 'El nombre de la materia no puede estar vacío').notEmpty();
+    const errors = req.validationErrors();
+    if (errors.length > 0) {
+        req.flash('message', errors[0].msg);
+        res.redirect('/asignaturas/edit/'+id);
+     }
+    else{
     await pool.query('UPDATE subjects set ? WHERE id = ?', [newSubject, id]);
     req.flash('success', 'Subject Updated Successfully');
     res.redirect('/asignaturas');
+    }
 });
 
 router.get('/notas/:id',isLoggedIn, async (req, res) => {
@@ -71,13 +87,18 @@ router.post('/notas/add', async (req, res) => {
         user_id: req.user.id
         
     };
-
-    
-  
-    
-    await pool.query( 'INSERT INTO grades set ?', [newGrade]);
+ 
+    req.check('grade', 'La nota debe ser un número').isNumeric();
+    req.check('percentage', 'El porcentaje debe ser un número').isNumeric();
+    const errors = req.validationErrors();
+    if (errors.length > 0) {
+    req.flash('message', errors[0].msg);
+    res.redirect('/asignaturas/notas/' + subject_id);
+    }
+    else
+   { await pool.query( 'INSERT INTO grades set ?', [newGrade]);
     res.redirect( '/asignaturas/notas/' + subject_id);
-    
+    }
 
 });
 
@@ -102,10 +123,19 @@ router.post('/notas/nota_edit/:subject_id/:id', async (req, res) => {
         percentage,
         description
     };
+
+    req.check('grade', 'La nota debe ser un número').isNumeric();
+    req.check('percentage', 'El porcentaje debe ser un número').isNumeric();
+    const errors = req.validationErrors();
+    if (errors.length > 0) {
+    req.flash('message', errors[0].msg);
+    res.redirect('/asignaturas/notas/nota_edit/'+subject_id+'/'+id);
+    }
+    else{
     await pool.query('UPDATE grades set ? WHERE id = ?', [newSubject, id]);
     req.flash('success', 'Grade Updated Successfully');
     res.redirect('/asignaturas/notas/' + subject_id);
-   
+    }
 });
 
 module.exports = router;
