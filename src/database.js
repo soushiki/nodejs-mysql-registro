@@ -3,7 +3,7 @@ const { promisify }= require('util');
 
 const { database } = require('./keys');
 
-const pool = mysql.createPool(process.env.JAWSDB_MARIA_URL);
+const pool = mysql.createPool(database);
 
 
 pool.getConnection((err, connection) => {
